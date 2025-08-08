@@ -16,6 +16,10 @@ from import_export.formats.base_formats import DEFAULT_FORMATS
 from ..fields import ImportExportFileField
 from ..tasks import run_import_job
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,6 +27,14 @@ logger = logging.getLogger(__name__)
 
 @with_author
 class ImportJob(models.Model):
+    author = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        related_name="import_jobs"
+    )
+
     file = ImportExportFileField(
         verbose_name=_("File to be imported"),
         upload_to="django-import-export-celery-import-jobs",

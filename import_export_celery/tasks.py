@@ -94,7 +94,7 @@ def _run_import_job(import_job, dry_run=True):
 
     skip_diff = resource._meta.skip_diff or resource._meta.skip_html_diff
 
-    result = resource.import_data(dataset, dry_run=dry_run)
+    result = resource.import_data(dataset, dry_run=dry_run, user=resource.import_job.author)
     change_job_status(
         import_job, "import", "4/5 Generating import summary", dry_run
     )
